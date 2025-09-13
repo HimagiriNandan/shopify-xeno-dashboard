@@ -5,7 +5,7 @@ import { setUserDetails } from '../store/slices/authSlice.js';
 export const useAuthInit = async () => {
   const dispatch = useDispatch();
   try{
-    const res = await axios.get('http://localhost:8000/api/auth/userdetails', { withCredentials: true });
+    const res = await axios.get('https://shopify-xeno-dashboard.onrender.com/api/auth/userdetails', { withCredentials: true });
     if(res.status === 200){
       dispatch(setUserDetails(res.data));
     }

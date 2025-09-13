@@ -20,7 +20,7 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     try{
-      const res = await axios.post('http://localhost:8000/api/auth/signup', {
+      const res = await axios.post('https://shopify-xeno-dashboard.onrender.com/api/auth/signup', {
         username: name,
         email,
         password
