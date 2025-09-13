@@ -76,11 +76,7 @@ const shopifyAppInstall =  (req, res) => {
             scopes: process.env.SHOPIFY_SCOPES
         });
         
-        res.json({ 
-            authUrl,
-            shopDomain,
-            redirectUri // Include for debugging
-        });
+        res.redirect(authUrl);
         
     } catch (error) {
         console.error('OAuth URL generation error:', error);
@@ -91,23 +87,36 @@ const shopifyAppInstall =  (req, res) => {
 
 
 // Create a simple test endpoint to verify your callback works
-const callback = (req, res) => {
-    console.log('=== CALLBACK REACHED ===');
-    console.log('Query params:', req.query);
-    console.log('Headers:', req.headers);
-    console.log('========================');
-    
-    // For testing, just return a simple response
-    res.send(`
-        <html>
-            <body>
-                <h1>Callback Reached Successfully!</h1>
-                <p>This means your redirect URI is working.</p>
-                <pre>${JSON.stringify(req.query, null, 2)}</pre>
-                <a href="${process.env.FRONTEND_URL}">Return to app</a>
-            </body>
-        </html>
-    `);
+const callback = async (req, res) => {
+  const { shop, code } = req.query;
+
+  if (!shop || !code) {
+    return res.status(400).send('Missing shop or code');
+  }
+
+  try {
+    const tokenResponse = await axios.post(`https://${shop}/admin/oauth/access_token`, {
+      client_id: process.env.SHOPIFY_API_KEY,
+      client_secret: process.env.SHOPIFY_API_SECRET,
+      code
+    });
+
+    const { access_token } = tokenResponse.data;
+    console.log(access_token);
+
+    // Save to Prisma
+    // await prisma.tenant.upsert({
+    //   where: { shopDomain: shop },
+    //   update: { accessToken: access_token },
+    //   create: { shopDomain: shop, accessToken: access_token }
+    // });
+
+    res.redirect(`${process.env.FRONTEND_URL}?shop=${shop}`);
+  } catch (error) {
+    console.error('Token exchange failed:', error);
+    res.status(500).send('OAuth failed');
+  }
 };
+
 
 export default {shopifyAppInstall,callback};
