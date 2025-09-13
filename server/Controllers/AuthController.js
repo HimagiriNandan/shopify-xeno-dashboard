@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 import { prisma } from '../Config/index.js';
 dotenv.config();
 
-const createToken = (username, email) => {
-  return jwt.sign({ username, email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+const createToken = (username, email, id) => {
+  return jwt.sign({ username, email, id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 }
 
 export const userSignup = async (req, res) => {
@@ -21,13 +21,13 @@ export const userSignup = async (req, res) => {
     const newUser = await prisma.user.create({
       data: { username, email, password: hashPsswd },
     });
-    const token = createToken(username, email);
+    const token = createToken(username, email, newUser.id);
     res.cookie('token', token, { 
       httpOnly: true, 
       secure: true 
     });
 
-    res.status(201).json({ message: 'User created successfully', data: { username: newUser.username, email: newUser.email } });
+    res.status(201).json({ message: 'User created successfully', data: { user_id: newUser.id, username: newUser.username, email: newUser.email } });
 
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -48,22 +48,22 @@ export const userLogin = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const token = createToken(user.username, email);
+    const token = createToken(user.username, email, user.id);
     res.cookie('token', token, { 
       httpOnly: true, 
       secure: true 
     });
-    res.status(200).json({ message: 'Login successful', data: {username: user.username, email: user.email} });
+    res.status(200).json({ message: 'Login successful', data: {user_id: user.id, username: user.username, email: user.email} });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 }
 
 export const userDetails = async (req, res) => {
-  const { email, username } = req.user;
+  const { email, username, id } = req.user;
   if(email && username){
     res.status(200).json({ 
-      email, username
+      user_id: id, email, username
     });
   } else {
     res.status(400).json({ message: 'User Not logged In' });
