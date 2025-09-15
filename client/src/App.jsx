@@ -2,7 +2,7 @@ import { Toaster } from "sonner";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {Provider} from 'react-redux'
 import { useSelector } from "react-redux";
-import { Provider as AppBridgeProvider } from '@shopify/app-bridge-react';
+import { AppBridgeProvider } from '@shopify/app-bridge-react';
 
 import Login from './components/auth/SignIn.jsx'
 import SignUp from './components/auth/SignUp.jsx'
