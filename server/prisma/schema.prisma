@@ -19,5 +19,17 @@ model User {
   username String
   email String @unique
   password String
+  tenant_id Int?
+  tenant Tenant? @relation(fields: [tenant_id], references: [tenant_id])
   createdAt DateTime @default(now())
+}
+
+model Tenant {
+  tenant_id Int @id @default(autoincrement())
+  shop_domain String @unique
+  access_token String
+  host String
+  users User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -1,0 +1,44 @@
+.nav-main-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #FFECDB;
+  color: white;
+  margin: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo{
+  color: #FF5733;
+  font-size: 20px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.heading{
+  color: #FF9500;
+  font-size: 20px;
+  font-weight: semi-bold;
+}
+.user-name{
+  color: #FF9500;
+  font-size: 20px;
+  font-weight: semi-bold;
+}
+
+@media (max-width: 500px) {
+  .logo, .heading, .user-name {
+    font-size: 15px;
+  }
+  .heading{
+    display: none;
+  }
+}
+
+@media (min-width: 501px) and (max-width: 768px) {
+  .logo, .heading, .user-name {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,6 @@
+.d-main-container{
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  gap: 20px;
+}

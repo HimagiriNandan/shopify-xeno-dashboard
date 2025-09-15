@@ -12,7 +12,8 @@ dotenv.config();
 const PORT = process.env.PORT;
 
 app.use(cors({
-  origin: ["https://store-dashboard-tau.vercel.app", "http://localhost:3000"],
+  origin: ["https://store-dashboard-tau.vercel.app", "http://localhost:5173"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
 

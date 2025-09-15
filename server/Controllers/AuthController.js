@@ -24,7 +24,8 @@ export const userSignup = async (req, res) => {
     const token = createToken(username, email, newUser.id);
     res.cookie('token', token, { 
       httpOnly: true, 
-      secure: true 
+      secure: true,
+      sameSite: 'none'
     });
 
     res.status(201).json({ message: 'User created successfully', data: { user_id: newUser.id, username: newUser.username, email: newUser.email } });
@@ -55,7 +56,8 @@ export const userLogin = async (req, res) => {
     const token = createToken(user.username, email, user.id);
     res.cookie('token', token, { 
       httpOnly: true, 
-      secure: true 
+      secure: true,
+      sameSite: 'none' 
     });
     console.log("Token created and cookie set");
     res.status(200).json({ message: 'Login successful', data: {user_id: user.id, username: user.username, email: user.email} });

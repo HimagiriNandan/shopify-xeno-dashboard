@@ -31,7 +31,7 @@ const Login = () => {
         setEmail('');
         setPassword('');
         dispatch(setUserDetails(res.data.data));
-        navigate('/dashboard')
+        navigate('/')
       }
     } catch(err){
       toast.error(err.message);
